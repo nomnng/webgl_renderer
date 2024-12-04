@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>WebGL test</title>
+	<style>
+		body {
+			background: #555;
+			margin: 0;
+		}
+
+		#main_canvas {
+			width: 100vw;
+			height: 100vh;
+			background: #666;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="main_canvas"></canvas>
+</body>
+<script>
+	var scripts = [
+		"webgl/shader.js",
+		"webgl/attribute_layout.js",
+		"webgl/vertex_array.js",
+		"webgl/index_buffer.js",
+		"webgl/model.js",
+		"webgl/camera.js",
+		"webgl/texture.js",
+		"math/matrix.js",
+		"math/helper_functions.js",
+		"utils/helper_functions.js",
+		"utils/obj_loader.js",
+		"main.js",
+	];
+
+	for (var script of scripts) {
+		let element = document.createElement("script");
+		element.src = script;
+		document.body.appendChild(element);
+	}
+</script>
+</html>
