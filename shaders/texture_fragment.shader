@@ -7,15 +7,23 @@ in vec2 v_uv;
 out vec4 outputColor;
 
 uniform vec3 u_ambient_light;
-uniform vec3 u_diffuse_light_position;
-uniform vec3 u_diffuse_light_color;
+uniform int u_light_count;
+uniform vec3 u_light_positions[16];
+uniform vec3 u_light_colors[16];
+uniform float u_light_radiuses[16];
 uniform sampler2D u_texture;
 
 void main() {
-	float test = min(1.0, 10.0 / length(u_diffuse_light_position - v_current_position));
-	vec3 diffuse_light_direction = normalize(u_diffuse_light_position - v_current_position);
-	vec3 diffuse_light = u_diffuse_light_color * max(0.0, dot(v_normal, diffuse_light_direction)) * test;
+	vec3 lighting = u_ambient_light;
 
-	vec3 lighting = u_ambient_light + diffuse_light;
+	for (int i = 0; i < u_light_count; i++) {
+		vec3 light_position = u_light_positions[i];
+		vec3 light_color = u_light_colors[i];
+		float light_radius = u_light_radiuses[i];
+		float light_intensity = min(1.0, light_radius / length(light_position - v_current_position));
+		vec3 light_direction = normalize(light_position - v_current_position);
+		lighting += light_color * max(0.0, dot(v_normal, light_direction)) * light_intensity;
+	}
+
 	outputColor = texture(u_texture, v_uv) * vec4(lighting, 1.0);
 }

@@ -76,16 +76,31 @@ class Shader {
 		}
 	}
 
-	setUniformMatrix4(name, matrix, transpose=true) {
-		this.gl.uniformMatrix4fv(this.uniforms[name], transpose, matrix.getArray());
-	}
-
-	setUniformVec3(name, value) {
+	getCachedUniformLocation(name) {
 		let location = this.uniforms[name];
 		if (!location) {
 			console.warn(`Can't find uniform with name "${name}"`);
-			return;
-		}
-		this.gl.uniform3fv(this.uniforms[name], value);
-	}	
+		}		
+		return location;
+	}
+
+	setUniformMatrix4(name, matrix, transpose=true) {
+		this.gl.uniformMatrix4fv(this.getCachedUniformLocation(name), transpose, matrix.getArray());
+	}
+
+	setUniformVec3(name, value) {
+		this.gl.uniform3f(this.getCachedUniformLocation(name), ...value);
+	}
+
+	setUniformVec3Array(name, value) {
+		this.gl.uniform3fv(this.getCachedUniformLocation(name), new Float32Array(value));
+	}
+
+	setUniformFloatArray(name, value) {
+		this.gl.uniform1fv(this.getCachedUniformLocation(name), new Float32Array(value));
+	}
+
+	setUniform1i(name, value) {
+		this.gl.uniform1i(this.getCachedUniformLocation(name), value);
+	}
 }

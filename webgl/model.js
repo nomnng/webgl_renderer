@@ -33,12 +33,13 @@ class Model {
 		return new Model(gl, shader, vao, texture);
 	}
 
-	render(viewMatrix, projectionMatrix) {
+	render(viewMatrix, projectionMatrix, lighting) {
 		this.vao.bind();
 		this.shader.useProgram();
 		this.shader.setUniformMatrix4("u_model", this.modelMatrix);
 		this.shader.setUniformMatrix4("u_view", viewMatrix);
 		this.shader.setUniformMatrix4("u_projection", projectionMatrix);
+		lighting.setUniforms(this.shader);
 		if (this.texture) {
 			this.texture.bind();
 		}

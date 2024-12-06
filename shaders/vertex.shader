@@ -7,8 +7,6 @@ uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
 
-uniform vec3 u_ambient_light;
-
 out vec3 v_color;
 out vec3 v_current_position;
 out vec3 v_normal;
