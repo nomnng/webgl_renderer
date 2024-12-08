@@ -20,14 +20,14 @@ class Model {
 
 	static async load(gl, shader, modelUrl) {
 		let vertices = await ObjLoader.loadFromUrl(modelUrl);
-		vao = new VertexArray(gl, vertices, shader.getAttributeLayout());
+		let vao = new VertexArray(gl, vertices, shader.getAttributeLayout());
 
 		return new Model(gl, shader, vao);
 	}
 
 	static async loadWithTexture(gl, shader, modelUrl, textureUrl) {
 		let vertices = await ObjLoader.loadFromUrl(modelUrl, false);
-		vao = new VertexArray(gl, vertices, shader.getAttributeLayout());
+		let vao = new VertexArray(gl, vertices, shader.getAttributeLayout());
 		let texture = await Texture.load(gl, textureUrl);
 
 		return new Model(gl, shader, vao, texture);

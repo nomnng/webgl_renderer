@@ -9,7 +9,7 @@ class VertexArray {
 
 		this.vertexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW); // vertices should have an ArrayBuffer type
 		this.updateAttributes();
 	}
 

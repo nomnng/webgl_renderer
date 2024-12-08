@@ -21,6 +21,14 @@ class Texture {
 		});
 	}
 
+	getWidth() {
+		return this.image.width;
+	}
+
+	getHeight() {
+		return this.image.height;
+	}
+
 	bind() {
 		this.gl.bindTexture(gl.TEXTURE_2D, this.texture);
 	}

@@ -79,4 +79,11 @@ class Camera {
 		this.z += this.forwardVector[2] * distance;
 		this.updateCameraPosition();
 	}
+
+	setPosition(x, y, z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.updateCameraPosition();
+	}
 }

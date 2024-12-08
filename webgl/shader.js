@@ -70,17 +70,16 @@ class Shader {
 		return this.gl.getUniformLocation(this.shaderProgram, name);
 	}
 
-	setUniformNames(names) {
-		for (let name of names) {
+	getCachedUniformLocation(name) {
+		if (!this.uniforms.hasOwnProperty(name)) {
 			this.uniforms[name] = this.getUniformLocation(name);
 		}
-	}
 
-	getCachedUniformLocation(name) {
 		let location = this.uniforms[name];
 		if (!location) {
 			console.warn(`Can't find uniform with name "${name}"`);
-		}		
+		}
+
 		return location;
 	}
 

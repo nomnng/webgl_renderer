@@ -1,7 +1,9 @@
-var gl, canvas, shader, vao, ibo, objectsForRendering = [];
+var gl, canvas, objectsForRendering = [];
 
 var camera = new Camera();
 var lighting = new Lighting();
+
+var textObj;
 
 window.addEventListener("load", async () => {
 	canvas = document.getElementById("main_canvas");
@@ -9,26 +11,18 @@ window.addEventListener("load", async () => {
 	canvas.height = canvas.clientHeight;
 	gl = canvas.getContext("webgl2");
 	gl.enable(gl.DEPTH_TEST);
-	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-	shader = await Shader.load(gl, "shaders/vertex.shader", "shaders/fragment.shader");
+	gl.enable(gl.BLEND)
+	gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+	let shader = await Shader.load(gl, "shaders/vertex.shader", "shaders/fragment.shader");
 	shader.useProgram();
-	shader.setUniformNames([
-		"u_model",
-		"u_view",
-		"u_projection",
-		"u_ambient_light",
-		"u_light_count",
-		"u_light_positions",
-		"u_light_colors",
-		"u_light_radiuses",		
-	]);
 	shader.addAttribute("a_position", 3, gl.FLOAT);
 	shader.addAttribute("a_normal", 3, gl.FLOAT);
 
 	for (let i = 0; i < 30; i++) {
 		let model = await Model.load(gl, shader, "models/monkey.obj");
-		model.setPosition(-15 + i * 3, -2, 5);
+		model.setPosition(-15 + i * 3, -2, 10);
 		objectsForRendering.push(model);
 	}
 
@@ -37,16 +31,6 @@ window.addEventListener("load", async () => {
 
 	textureShader = await Shader.load(gl, "shaders/texture_vertex.shader", "shaders/texture_fragment.shader");
 	textureShader.useProgram();
-	textureShader.setUniformNames([
-		"u_model",
-		"u_view",
-		"u_projection",
-		"u_ambient_light",
-		"u_light_count",
-		"u_light_positions",
-		"u_light_colors",
-		"u_light_radiuses",
-	]);
 	textureShader.addAttribute("a_position", 3, gl.FLOAT);
 	textureShader.addAttribute("a_normal", 3, gl.FLOAT);
 	textureShader.addAttribute("a_uv", 2, gl.FLOAT);
@@ -55,7 +39,17 @@ window.addEventListener("load", async () => {
 	cubeTextured.setPosition(4, -2, -2);
 	objectsForRendering.push(cubeTextured);
 
+	let textShader = await Shader.load(gl, "shaders/text_vertex.shader", "shaders/text_fragment.shader");
+	textShader.useProgram();
+	textShader.addAttribute("a_position", 2, gl.FLOAT);
+	textShader.addAttribute("a_uv", 2, gl.FLOAT);
+
+	let fontTexture = await Texture.load(gl, "fonts/tfont.png");
+	let fontData = await XmlFontLoader.loadFromUrl("fonts/tfont.xml");
+	textObj = new TextLine(gl, "Text for testing...", fontData, fontTexture, textShader);
+
 	camera.rotateHorizontally(90);
+	camera.setPosition(0, 0, -4);
 
 	requestAnimationFrame(render);
 });
@@ -73,6 +67,8 @@ function render() {
 	for (let object of objectsForRendering) {
 		object.render(camera.getViewMatrix(), camera.getProjectionMatrix(), lighting);
 	}
+
+	textObj.render(camera.getViewMatrix(), camera.getProjectionMatrix());
 
 	requestAnimationFrame(render);
 }
