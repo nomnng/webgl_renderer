@@ -30,6 +30,9 @@ class Lighting {
 	setUniforms(shader) {
 		shader.setUniformVec3("u_ambient_light", this.ambientLight);
 		shader.setUniform1i("u_light_count", this.lightSources.length);
+		if (!this.lightSources.length) {
+			return;
+		}
 
 		let lightSourcePositions = this.lightSources.map((l) => l.getPosition()).flat();
 		let lightSourceColors = this.lightSources.map((l) => l.getColor()).flat();

@@ -87,8 +87,16 @@ class Shader {
 		this.gl.uniformMatrix4fv(this.getCachedUniformLocation(name), transpose, matrix.getArray());
 	}
 
+	setUniformVec2(name, value) {
+		this.gl.uniform2f(this.getCachedUniformLocation(name), ...value);
+	}
+
 	setUniformVec3(name, value) {
 		this.gl.uniform3f(this.getCachedUniformLocation(name), ...value);
+	}
+
+	setUniformVec4(name, value) {
+		this.gl.uniform4f(this.getCachedUniformLocation(name), ...value);
 	}
 
 	setUniformVec3Array(name, value) {
@@ -101,5 +109,9 @@ class Shader {
 
 	setUniform1i(name, value) {
 		this.gl.uniform1i(this.getCachedUniformLocation(name), value);
+	}
+
+	setUniform1f(name, value) {
+		this.gl.uniform1f(this.getCachedUniformLocation(name), value);
 	}
 }

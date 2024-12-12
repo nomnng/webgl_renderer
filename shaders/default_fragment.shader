@@ -3,9 +3,9 @@ precision mediump float;
 
 in vec3 v_current_position;
 in vec3 v_normal;
-in vec3 v_color;
 out vec4 outputColor;
 
+uniform vec4 u_color;
 uniform vec3 u_ambient_light;
 uniform int u_light_count;
 uniform vec3 u_light_positions[16];
@@ -24,5 +24,5 @@ void main() {
 		lighting += light_color * max(0.0, dot(v_normal, light_direction)) * light_intensity;
 	}
 
-	outputColor = vec4(v_color * lighting, 1.0);
+	outputColor = u_color * vec4(lighting, 1.0);
 }
