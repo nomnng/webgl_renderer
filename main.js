@@ -48,17 +48,26 @@ window.addEventListener("load", async () => {
 	gl.enable(gl.BLEND);
 	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
+	SET_LOADING_STATUS("Loading shaders...");
 	await prepareShaders();
 
 	DEFAULT_FONT = {
-		texture: await Texture.load(gl, "fonts/tfont.png"),
-		characterData: await XmlFontLoader.loadFromUrl("fonts/tfont.xml"),
+		texture: await Texture.load(gl, "fonts/font.png"),
+		characterData: await XmlFontLoader.loadFromUrl("fonts/font.xml"),
 	};
 
+	SET_LOADING_STATUS("Loading models...");
 	LOADED_MODELS.texturedCube = await Model.loadWithTexture(gl, LOADED_SHADERS.texture.getAttributeLayout(), "models/cube_textured.obj", "models/cube_number_texture.jpg");
 	LOADED_MODELS.monkey = await Model.load(gl, LOADED_SHADERS.default.getAttributeLayout(), "models/monkey.obj");
+	SET_LOADING_STATUS("Loading scenes...");
 
-	Scene.setCurrentScene(new TestScene(gl));
+	await Scene.loadScenes([
+		"test_scene",
+		"test_scene2"
+	]);
+	SET_LOADING_STATUS("");
+
+	Scene.changeScene(gl, "test_scene");
 
 	requestAnimationFrame(render);
 });

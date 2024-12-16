@@ -48,6 +48,9 @@ class UIText {
 				charData = characterData["?".charCodeAt(0)];
 			}
 
+			let xAdjustment = charData.xAdjust * fontSize;
+			let yAdjustment = charData.yAdjust * fontSize;
+
 			let bottomLeftVertex = [
 				-1 + currentXOffset,
 				-1 - currentYOffset,
@@ -73,6 +76,11 @@ class UIText {
 				charData.y / textureHeight,
 			];
 
+			for (let vertex of [bottomLeftVertex, bottomRightVertex, upperLeftVertex, upperRightVertex]) {
+				vertex[0] += xAdjustment;
+				vertex[1] += yAdjustment;
+			}
+
 			// first triangle
 			vertices.push(...bottomLeftVertex);
 			vertices.push(...upperLeftVertex);
@@ -93,13 +101,15 @@ class UIText {
 		return vertices;
 	}
 
-	render() {
+	render(charsToRender) {
+		let verticesToRender = charsToRender === undefined ? this.vao.getVertexCount() : charsToRender * 3 * 2;
+
 		this.vao.bind();
 		this.shader.useProgram();
 		this.shader.setUniformVec2("u_position", [this.x, this.y]);
 		this.shader.setUniformVec4("u_color", this.color);
 		this.shader.setUniform1f("u_zindex", this.zIndex);		
 		this.texture.bind();
-		this.gl.drawArrays(gl.TRIANGLES, 0, this.vao.getVertexCount());
+		this.gl.drawArrays(gl.TRIANGLES, 0, verticesToRender);
 	}
 }

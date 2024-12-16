@@ -86,4 +86,21 @@ class Camera {
 		this.z = z;
 		this.updateCameraPosition();
 	}
+
+	getYaw() {
+		return this.yaw;
+	}
+
+	setYaw(yaw) {
+		this.yaw = yaw;
+		this.updateCameraRotation();
+	}
+
+	getPosition() {
+		return [this.x, this.y, this.z];
+	}
+
+	getHorizontalDirectionVector() {
+		return [dSin(this.yaw), dCos(this.yaw)];
+	}
 }

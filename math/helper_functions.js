@@ -21,3 +21,21 @@ function normalizeVector(v) {
 	let length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 	return [v[0] / length, v[1] / length, v[2] / length];
 }
+
+function vectorLength(v) {
+	let x = Math.pow(v[0], 2);
+	let y = Math.pow(v[1], 2);
+	return Math.sqrt(x + y);
+}
+
+function calculateAngleBetween(a, b) {
+	let ab = a[0] * b[0] + a[1] * b[1];
+	let angle = Math.acos(ab / (vectorLength(a) * vectorLength(b))) * 180 / Math.PI;
+
+    let crossProduct = a[0] * b[1] - a[1] * b[0];
+    if (crossProduct < 0) {
+        angle = -angle;
+    }
+
+    return angle;
+}

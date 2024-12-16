@@ -45,6 +45,10 @@ class Object3D {
 		this.updateModelMatrix();
 	}
 
+	getPosition() {
+		return [this.x, this.y, this.z];
+	}
+
 	moveBy(x, y, z) {
 		this.x += x;
 		this.y += y;

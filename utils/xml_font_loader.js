@@ -12,12 +12,16 @@ class XmlFontLoader {
 			let width = parseInt(char.getAttribute("width"));
 			let height = parseInt(char.getAttribute("height"));
 			let xOffset = parseInt(char.getAttribute("xadvance"));
+			let xAdjust = parseInt(char.getAttribute("xoffset"));
+			let yAdjust = parseInt(char.getAttribute("yoffset"));
 			result[id] = {
 				x,
 				y,
 				width,
 				height,
 				xOffset,
+				xAdjust,
+				yAdjust,
 			};
 		}
 		return result;
