@@ -117,11 +117,35 @@ class Scene {
 			finish,
 			update
 		};
-	}	
+	}
 
 	changeSceneAction(sceneName) {
 		let init = () => {
 			Scene.changeScene(this.gl, sceneName);
+		};
+
+		return {
+			init,
+		};
+	}
+
+	playAudioAction(audio, timeToFullVolume) {
+		let init = () => {
+			AudioManager.play(audio, timeToFullVolume);
+			this.currentAction = null;
+			this.executeNextAction();
+		};
+
+		return {
+			init,
+		};
+	}
+
+	stopAudioAction(timeToFullStop) {
+		let init = () => {
+			AudioManager.stop(timeToFullStop);
+			this.currentAction = null;
+			this.executeNextAction();
 		};
 
 		return {
